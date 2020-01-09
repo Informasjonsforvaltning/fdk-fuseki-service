@@ -19,8 +19,8 @@ jobs:
           command: |
             helm init --client-only
             helm repo add fdk https://informasjonsforvaltning.github.io/helm-chart/
-            helm fetch --untar --untardir ./helm fdk/fdk-fuseki-service
-            helm template --set DOCKER_IMAGE_NAME="eu.gcr.io/fdk-infra/fdk-fuseki-service:${{ github.event.client_payload.sha }}" -f ./helm/fdk-fuseki-service/values/demo.yaml ./helm/fdk-fuseki-service/ > ./kubectlapply.yaml
+            helm fetch --untar --untardir ./helm fdk/fuseki
+            helm template --set DOCKER_IMAGE_NAME="eu.gcr.io/fdk-infra/fdk-fuseki-service:${{ github.event.client_payload.sha }}" -f ./helm/fuseki/values/demo.yaml ./helm/fuseki/ > ./kubectlapply.yaml
             cat ./kubectlapply.yaml
             chmod o+w ./kubectlapply.yaml
             cat kubectlapply.yaml
