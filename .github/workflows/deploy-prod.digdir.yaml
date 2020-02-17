@@ -74,7 +74,6 @@ jobs:
         with:
           args: '{\"channel\":\"C7NTH118T\",\"text\":\"Application: fdk-fuseki-service deployed to digdir-production\"}'
 
-
       - name: Trigger deploy to demo
         uses: peter-evans/repository-dispatch@master
         with:
