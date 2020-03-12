@@ -36,8 +36,8 @@ jobs:
           command: |
             helm init --client-only
             helm repo add fdk https://informasjonsforvaltning.github.io/helm-chart/
-            helm fetch --untar --untardir ./helm fdk/fuseki
-            helm template --set DOCKER_IMAGE_NAME="eu.gcr.io/digdir-fdk-infra/fdk-fuseki-service:$GITHUB_SHA" -f ./helm/fuseki/values/prod-digdir.yaml ./helm/fuseki/ > ./kubectlapply.yaml
+            helm fetch --untar --untardir ./helm fdk/fdk-fuseki-service
+            helm template --set DOCKER_IMAGE_NAME="eu.gcr.io/digdir-fdk-infra/fdk-fuseki-service:$GITHUB_SHA" -f ./helm/fdk-fuseki-service/values/prod-digdir.yaml ./helm/fdk-fuseki-service                         / > ./kubectlapply.yaml
             chmod o+w ./kubectlapply.yaml
             cat kubectlapply.yaml
 
@@ -48,9 +48,9 @@ jobs:
           service_account_email: ${{ secrets.DIGDIR_FDK_PROD_EMAIL }}
           service_account_key: ${{ secrets.DIGDIR_FDK_PROD_AUTODEPLOY }}
       - run: |
-          gcloud compute --project digdir-fdk-prod disks snapshot "fdk-prod-fuseki" --snapshot-names "autogcs-autodeploy-prod-fuseki-${GITHUB_SHA::8}" --zone "europe-north1-a" &
+          gcloud compute --project digdir-fdk-prod disks snapshot "fdk-prod-fuseki-service" --snapshot-names "autogcs-autodeploy-prod-fuseki-service-${GITHUB_SHA::8}" --zone "europe-north1-a" &
           wait
-          gcloud compute --project digdir-fdk-prod snapshots add-labels "autogcs-autodeploy-prod-fuseki-${GITHUB_SHA::8}" --labels="snapshotdays="14""
+          gcloud compute --project digdir-fdk-prod snapshots add-labels "autogcs-autodeploy-prod-fuseki-service-${GITHUB_SHA::8}" --labels="snapshotdays="14""
 
       - name: Get kubeconfig file from GKE
         uses: machine-learning-apps/gke-kubeconfig@master
