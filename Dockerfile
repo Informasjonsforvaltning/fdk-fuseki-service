@@ -9,6 +9,8 @@ RUN mkdir /etc/fuseki/
 RUN mkdir /etc/fuseki/databases/
 RUN mkdir /etc/fuseki/databases/dataservice/
 RUN mkdir /etc/fuseki/databases/dataservice-catalog/
+RUN mkdir /etc/fuseki/databases/dataset/
+RUN mkdir /etc/fuseki/databases/dataset-catalog/
 
 ADD apache-jena-fuseki-3.9.0.zip /usr/local/tomcat/fusekiDownloadTemp
 
@@ -34,6 +36,8 @@ RUN chmod 777 -R /usr/local/tomcat/webapps
 
 ADD dataservice-config.ttl /etc/fuseki/configuration/
 ADD dataservice-catalog-config.ttl /etc/fuseki/configuration/
+ADD dataset-config.ttl /etc/fuseki/configuration/
+ADD dataset-catalog-config.ttl /etc/fuseki/configuration/
 ADD shiro.ini /etc/fuseki/
 RUN chmod 775 -R /etc/fuseki
 
