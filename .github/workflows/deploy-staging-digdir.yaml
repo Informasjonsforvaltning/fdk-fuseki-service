@@ -3,7 +3,7 @@ name: Build and deploy to staging (digdir) when pull request is created
 on:
   pull_request:
     branches:
-      - master
+      - deploy/old-fuseki
 
 jobs:
   build-and-deploy:
@@ -24,10 +24,10 @@ jobs:
       - run: gcloud auth configure-docker
 
       - name: Build Docker image with GitHub commit sha tag
-        run: docker build . -t eu.gcr.io/digdir-fdk-infra/fdk-fuseki-service:$GITHUB_SHA -t eu.gcr.io/digdir-fdk-infra/fdk-fuseki-service:staging_latest
+        run: docker build . -t eu.gcr.io/digdir-fdk-infra/old-fuseki-service:$GITHUB_SHA -t eu.gcr.io/digdir-fdk-infra/old-fuseki-service:staging_latest
 
       - name: Publish docker image to Google Cloud
-        run: docker -- push eu.gcr.io/digdir-fdk-infra/fdk-fuseki-service
+        run: docker -- push eu.gcr.io/digdir-fdk-infra/old-fuseki-service
 
       - name: Apply Helm template
         uses: stefanprodan/kube-tools@v1
@@ -37,7 +37,7 @@ jobs:
             helm init --client-only
             helm repo add fdk https://informasjonsforvaltning.github.io/helm-chart/
             helm fetch --untar --untardir ./helm fdk/fuseki
-            helm template --set DOCKER_IMAGE_NAME="eu.gcr.io/digdir-fdk-infra/fdk-fuseki-service:$GITHUB_SHA" -f ./helm/fuseki/values/staging-digdir.yaml ./helm/fuseki/ > ./kubectlapply.yaml
+            helm template --set DOCKER_IMAGE_NAME="eu.gcr.io/digdir-fdk-infra/old-fuseki-service:$GITHUB_SHA" -f ./helm/fuseki/values/staging-digdir.yaml ./helm/fuseki/ > ./kubectlapply.yaml
             chmod o+w ./kubectlapply.yaml
             cat kubectlapply.yaml
 
@@ -61,4 +61,4 @@ jobs:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         uses: pullreminders/slack-action@master
         with:
-          args: '{\"channel\":\"C7NTH118T\",\"text\":\"Application: fdk-fuseki-service deployed to digdir-staging\"}'
+          args: '{\"channel\":\"C7NTH118T\",\"text\":\"Application: old-fuseki-service deployed to digdir-staging\"}'

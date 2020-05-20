@@ -3,7 +3,7 @@ name: Build, test and deploy to production (digdir) on merge to master branch
 on:
   push:
     branches:
-      - master
+      - deploy/old-fuseki
 
 jobs:
   build-test-and-deploy-production:
@@ -24,10 +24,10 @@ jobs:
       - run: gcloud auth configure-docker
 
       - name: Build Docker image
-        run: docker build . -t eu.gcr.io/digdir-fdk-infra/fdk-fuseki-service:$GITHUB_SHA -t eu.gcr.io/digdir-fdk-infra/fdk-fuseki-service:latest
+        run: docker build . -t eu.gcr.io/digdir-fdk-infra/old-fuseki-service:$GITHUB_SHA -t eu.gcr.io/digdir-fdk-infra/old-fuseki-service:latest
 
       - name: Publish docker image to Google Cloud
-        run: docker -- push eu.gcr.io/digdir-fdk-infra/fdk-fuseki-service
+        run: docker -- push eu.gcr.io/digdir-fdk-infra/old-fuseki-service
 
       - name: Apply Helm template
         uses: stefanprodan/kube-tools@v1
@@ -37,7 +37,7 @@ jobs:
             helm init --client-only
             helm repo add fdk https://informasjonsforvaltning.github.io/helm-chart/
             helm fetch --untar --untardir ./helm fdk/fuseki
-            helm template --set DOCKER_IMAGE_NAME="eu.gcr.io/digdir-fdk-infra/fdk-fuseki-service:$GITHUB_SHA" -f ./helm/fuseki/values/prod-digdir.yaml ./helm/fuseki/ > ./kubectlapply.yaml
+            helm template --set DOCKER_IMAGE_NAME="eu.gcr.io/digdir-fdk-infra/old-fuseki-service:$GITHUB_SHA" -f ./helm/fuseki/values/prod-digdir.yaml ./helm/fuseki/ > ./kubectlapply.yaml
             chmod o+w ./kubectlapply.yaml
             cat kubectlapply.yaml
 
@@ -72,11 +72,4 @@ jobs:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         uses: pullreminders/slack-action@master
         with:
-          args: '{\"channel\":\"C7NTH118T\",\"text\":\"Application: fdk-fuseki-service deployed to digdir-production\"}'
-
-      - name: Trigger deploy to demo
-        uses: peter-evans/repository-dispatch@master
-        with:
-          token: ${{ secrets.DISPATCH_TOKEN }}
-          event-type: deploy-demo-digdir
-          client-payload: '{"sha": "${{ github.sha }}"}'
+          args: '{\"channel\":\"C7NTH118T\",\"text\":\"Application: old-fuseki-service deployed to digdir-production\"}'
