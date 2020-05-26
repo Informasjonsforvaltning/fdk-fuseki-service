@@ -6,7 +6,7 @@
 @prefix :        <#> .
 
 <#service1> rdf:type fuseki:Service ;
-    fuseki:name                       "dataset" ;       # http://host:port/ds
+    fuseki:name                       "dataset-harvest" ;       # http://host:port/ds
     fuseki:serviceQuery               "sparql" ;   # SPARQL query service
     fuseki:serviceQuery               "query" ;    # SPARQL query service (alt name)
     fuseki:serviceUpdate              "update" ;   # SPARQL update service
@@ -19,6 +19,6 @@
 
 <#dataset> rdf:type      tdb:DatasetTDB ;
    ja:context [ ja:cxtName "arq:queryTimeout" ;  ja:cxtValue "60000" ] ;
-    tdb:location "/etc/fuseki/databases/dataset" ;
+    tdb:location "/etc/fuseki/databases/dataset-harvest" ;
      tdb:unionDefaultGraph true ;
      .
