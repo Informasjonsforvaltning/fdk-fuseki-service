@@ -7,10 +7,10 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN mkdir /usr/local/tomcat/fusekiDownloadTemp
 RUN mkdir /etc/fuseki/
 RUN mkdir /etc/fuseki/databases/
-RUN mkdir /etc/fuseki/databases/dataservice/
-RUN mkdir /etc/fuseki/databases/dataservice-catalog/
-RUN mkdir /etc/fuseki/databases/dataset/
-RUN mkdir /etc/fuseki/databases/dataset-catalog/
+RUN mkdir /etc/fuseki/databases/dataservice-harvest/
+RUN mkdir /etc/fuseki/databases/dataservice-meta/
+RUN mkdir /etc/fuseki/databases/dataset-harvest/
+RUN mkdir /etc/fuseki/databases/dataset-meta/
 
 ADD apache-jena-fuseki-3.9.0.zip /usr/local/tomcat/fusekiDownloadTemp
 
@@ -34,10 +34,11 @@ RUN mv /usr/local/tomcat/fusekiDownloadTemp/apache-jena-fuseki-3.9.0/fuseki.war 
 
 RUN chmod 777 -R /usr/local/tomcat/webapps
 
-ADD dataservice-config.ttl /etc/fuseki/configuration/
-ADD dataservice-catalog-config.ttl /etc/fuseki/configuration/
-ADD dataset-config.ttl /etc/fuseki/configuration/
-ADD dataset-catalog-config.ttl /etc/fuseki/configuration/
+ADD dataservice-harvest-config.ttl /etc/fuseki/configuration/
+ADD dataservice-meta-config.ttl /etc/fuseki/configuration/
+ADD dataset-harvest-config.ttl /etc/fuseki/configuration/
+ADD dataset-meta-config.ttl /etc/fuseki/configuration/
+
 ADD shiro.ini /etc/fuseki/
 RUN chmod 775 -R /etc/fuseki
 
