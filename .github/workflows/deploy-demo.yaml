@@ -1,8 +1,8 @@
-name: Deploy to demo (digdir)
+name: Deploy to demo
 
 on:
   repository_dispatch:
-    types: [deploy-demo-digdir]
+    types: [deploy-demo]
 
 jobs:
   deploy-demo:
