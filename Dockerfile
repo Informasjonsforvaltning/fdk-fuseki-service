@@ -11,8 +11,9 @@ RUN mkdir /etc/fuseki/databases/dataservice-harvest/
 RUN mkdir /etc/fuseki/databases/dataservice-meta/
 RUN mkdir /etc/fuseki/databases/dataset-harvest/
 RUN mkdir /etc/fuseki/databases/dataset-meta/
+RUN mkdir /etc/fuseki/databases/harvested/
 
-ADD apache-jena-fuseki-3.9.0.zip /usr/local/tomcat/fusekiDownloadTemp
+ADD apache-jena-fuseki-3.16.0.zip /usr/local/tomcat/fusekiDownloadTemp
 
 ADD tomcat-users.xml /usr/local/tomcat/conf/
 ADD server.xml /usr/local/tomcat/conf/
@@ -28,9 +29,9 @@ RUN chmod 775 -R /etc/fuseki/databases
 
 WORKDIR /usr/local/tomcat/fusekiDownloadTemp/
 
-RUN unzip -o /usr/local/tomcat/fusekiDownloadTemp/apache-jena-fuseki-3.9.0.zip
+RUN unzip -o /usr/local/tomcat/fusekiDownloadTemp/apache-jena-fuseki-3.16.0.zip
 
-RUN mv /usr/local/tomcat/fusekiDownloadTemp/apache-jena-fuseki-3.9.0/fuseki.war /usr/local/tomcat/webapps/fuseki.war
+RUN mv /usr/local/tomcat/fusekiDownloadTemp/apache-jena-fuseki-3.16.0/fuseki.war /usr/local/tomcat/webapps/fuseki.war
 
 RUN chmod 777 -R /usr/local/tomcat/webapps
 
@@ -38,6 +39,7 @@ ADD dataservice-harvest-config.ttl /etc/fuseki/configuration/
 ADD dataservice-meta-config.ttl /etc/fuseki/configuration/
 ADD dataset-harvest-config.ttl /etc/fuseki/configuration/
 ADD dataset-meta-config.ttl /etc/fuseki/configuration/
+ADD harvested-config.ttl /etc/fuseki/configuration/
 
 ADD shiro.ini /etc/fuseki/
 RUN chmod 775 -R /etc/fuseki
