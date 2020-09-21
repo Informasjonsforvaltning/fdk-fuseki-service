@@ -9,8 +9,6 @@ RUN mkdir /etc/fuseki/
 RUN mkdir /etc/fuseki/databases/
 RUN mkdir /etc/fuseki/databases/dataservice-harvest/
 RUN mkdir /etc/fuseki/databases/dataservice-meta/
-RUN mkdir /etc/fuseki/databases/dataset-harvest/
-RUN mkdir /etc/fuseki/databases/dataset-meta/
 RUN mkdir /etc/fuseki/databases/harvested/
 
 ADD apache-jena-fuseki-3.16.0.zip /usr/local/tomcat/fusekiDownloadTemp
@@ -37,8 +35,6 @@ RUN chmod 777 -R /usr/local/tomcat/webapps
 
 ADD dataservice-harvest-config.ttl /etc/fuseki/configuration/
 ADD dataservice-meta-config.ttl /etc/fuseki/configuration/
-ADD dataset-harvest-config.ttl /etc/fuseki/configuration/
-ADD dataset-meta-config.ttl /etc/fuseki/configuration/
 ADD harvested-config.ttl /etc/fuseki/configuration/
 
 ADD shiro.ini /etc/fuseki/
