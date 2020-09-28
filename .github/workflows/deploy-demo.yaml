@@ -20,7 +20,7 @@ jobs:
             helm init --client-only
             helm repo add fdk https://informasjonsforvaltning.github.io/helm-chart/
             helm fetch --untar --untardir ./helm fdk/fdk-fuseki-service
-            helm template --set DOCKER_IMAGE_NAME="eu.gcr.io/digdir-fdk-infra/fdk-fuseki-service:${{ github.event.client_payload.sha }}" -f ./helm/fdk-fuseki-service/values/demo-digdir.yaml ./helm/fdk-fuseki-service/ > ./kubectlapply.yaml
+            helm template --set DOCKER_IMAGE_NAME="eu.gcr.io/digdir-fdk-infra/fdk-fuseki-service:${{ github.event.client_payload.sha }}" -f ./helm/fdk-fuseki-service/values/demo.yaml ./helm/fdk-fuseki-service/ > ./kubectlapply.yaml
             chmod o+w ./kubectlapply.yaml
             cat kubectlapply.yaml
 
@@ -39,9 +39,15 @@ jobs:
         with:
           args: "apply -f ./kubectlapply.yaml --force"
 
-      - name: Notify slack of deploy
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-        uses: pullreminders/slack-action@master
+      - name: Notify slack
+        uses: 8398a7/action-slack@v3
         with:
-          args: '{\"channel\":\"C7NTH118T\",\"text\":\"Application: fdk-fuseki-service deployed to digdir-demo\"}'
+          mention: 'channel'
+          if_mention: failure
+          status: ${{ job.status }}
+          author_name: 'Application: fdk-fuseki-service | Environment: demo'
+          fields: commit,author,workflow
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()
