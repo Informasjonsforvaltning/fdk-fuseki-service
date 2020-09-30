@@ -7,8 +7,6 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN mkdir /usr/local/tomcat/fusekiDownloadTemp
 RUN mkdir /etc/fuseki/
 RUN mkdir /etc/fuseki/databases/
-RUN mkdir /etc/fuseki/databases/dataservice-harvest/
-RUN mkdir /etc/fuseki/databases/dataservice-meta/
 RUN mkdir /etc/fuseki/databases/harvested/
 
 ADD apache-jena-fuseki-3.16.0.zip /usr/local/tomcat/fusekiDownloadTemp
@@ -33,8 +31,6 @@ RUN mv /usr/local/tomcat/fusekiDownloadTemp/apache-jena-fuseki-3.16.0/fuseki.war
 
 RUN chmod 777 -R /usr/local/tomcat/webapps
 
-ADD dataservice-harvest-config.ttl /etc/fuseki/configuration/
-ADD dataservice-meta-config.ttl /etc/fuseki/configuration/
 ADD harvested-config.ttl /etc/fuseki/configuration/
 
 ADD shiro.ini /etc/fuseki/
